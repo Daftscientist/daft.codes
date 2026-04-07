@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
+import SongSearchBox from "./SongSearchBox";
 
 const MapSection = dynamic(() => import("./MapSection"), {
   ssr: false,
@@ -28,7 +29,6 @@ export default function HomePage() {
   const dotFillRef = useRef<HTMLSpanElement>(null);
   const clockRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLAnchorElement>(null);
-  const suggestInputRef = useRef<HTMLInputElement>(null);
   const [suggestStatus, setSuggestStatus] = useState("");
   const [suggestClass, setSuggestClass] = useState("suggest-status");
   const [suggestDisabled, setSuggestDisabled] = useState(false);
@@ -167,20 +167,18 @@ export default function HomePage() {
   }, []);
 
   // Song suggest
-  const submitSuggestion = useCallback(async () => {
-    const val = suggestInputRef.current?.value.trim();
-    if (!val) return;
+  const submitSuggestion = useCallback(async (payload: {
+    track: string; artist: string; spotify_url: string; album_art: string;
+  }) => {
     setSuggestDisabled(true);
-
     try {
       const res = await fetch(`${API_BASE}/suggestions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ song: val }),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        if (suggestInputRef.current) suggestInputRef.current.value = "";
         setSuggestStatus("Thanks, I'll check it out.");
         setSuggestClass("suggest-status ok");
       } else if (res.status === 429) {
@@ -355,21 +353,7 @@ export default function HomePage() {
               <div className="b-label">Suggest me a song</div>
               <div className="b-val">Think I&apos;d vibe to something? Drop a recommendation and I&apos;ll check it out.</div>
               <div className="suggest-form">
-                <div className="suggest-input-row">
-                  <input
-                    type="text"
-                    className="suggest-input"
-                    ref={suggestInputRef}
-                    placeholder="Song name or Spotify link..."
-                    autoComplete="off"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") submitSuggestion();
-                    }}
-                  />
-                  <button className="suggest-send" disabled={suggestDisabled} onClick={submitSuggestion}>
-                    Send
-                  </button>
-                </div>
+                <SongSearchBox onSubmit={submitSuggestion} disabled={suggestDisabled} />
                 <div className={suggestClass}>{suggestStatus}</div>
               </div>
             </div>
@@ -580,7 +564,10 @@ export default function HomePage() {
             </span>
             Built by Leo when his ADHD meds ran out.
           </span>
-          <Link href="/terminal">/terminal</Link>
+          <div style={{ display: "flex", gap: "16px" }}>
+            <Link href="/playlist">/playlist</Link>
+            <Link href="/terminal">/terminal</Link>
+          </div>
         </footer>
       </div>
     </>
