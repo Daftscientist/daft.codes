@@ -444,15 +444,26 @@ export default function TerminalPage() {
           body {
             font-size: 12px;
             line-height: 1.5;
+            overflow: hidden;
+          }
+          .terminal-wrap {
+            width: 100vw;
+            max-width: 100vw;
+            overflow-x: hidden;
           }
           .terminal-chrome {
             padding: 10px 12px !important;
           }
           .terminal-output {
             padding: 12px !important;
+            overflow-x: hidden;
+            word-break: break-all;
           }
           .terminal-input {
             padding: 10px 12px !important;
+          }
+          .terminal-input input {
+            font-size: 12px !important;
           }
           .terminal-prompt-path {
             display: none;
@@ -473,12 +484,15 @@ export default function TerminalPage() {
       />
 
       <div
+        className="terminal-wrap"
         style={{
           display: "flex",
           flexDirection: "column",
           height: "100vh",
           maxWidth: "860px",
+          width: "100%",
           margin: "0 auto",
+          boxSizing: "border-box",
         }}
       >
         {/* Chrome */}
