@@ -73,7 +73,7 @@ export default function NotFound() {
 
         {/* Figure */}
         <Image
-          src="/assets/figure.svg"
+          src="/assets/figure-sad.svg"
           alt=""
           width={160}
           height={155}
