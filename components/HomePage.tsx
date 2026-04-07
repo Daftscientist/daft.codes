@@ -384,7 +384,7 @@ export default function HomePage() {
               <a href="https://nea.daftscientist.dev" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                 Read ↗
               </a>
-              <a href="https://github.com/daftscientist" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+              <a href="https://github.com/Daftscientist/Alevel-NEA" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                 GitHub ↗
               </a>
             </div>
@@ -430,7 +430,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="proj-links">
-              <a href="https://github.com/daftscientist" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+              <a href="https://github.com/Daftscientist/WebScene" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
                 GitHub ↗
               </a>
             </div>
@@ -474,7 +474,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="proj-links">
-              <a href="https://github.com/daftscientist" className="proj-link" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Daftscientist/Jrni-Demo" className="proj-link" target="_blank" rel="noopener noreferrer">
                 GitHub ↗
               </a>
             </div>
@@ -498,7 +498,7 @@ export default function HomePage() {
               <a href="https://usecascade.io" className="proj-link" target="_blank" rel="noopener noreferrer">
                 Website ↗
               </a>
-              <a href="https://github.com/daftscientist" className="proj-link" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/UseCascadeIo" className="proj-link" target="_blank" rel="noopener noreferrer">
                 GitHub ↗
               </a>
             </div>
