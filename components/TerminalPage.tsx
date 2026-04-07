@@ -439,6 +439,7 @@ export default function TerminalPage() {
           color: var(--silver);
           overflow: hidden;
           cursor: auto;
+          height: 100dvh;
         }
         @media (max-width: 600px) {
           body {
@@ -488,7 +489,7 @@ export default function TerminalPage() {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
+          height: "100dvh",
           maxWidth: "860px",
           width: "100%",
           margin: "0 auto",
