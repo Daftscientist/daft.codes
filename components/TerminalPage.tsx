@@ -532,7 +532,7 @@ export default function TerminalPage() {
               letterSpacing: "0.5px",
             }}
           >
-            leo@daftscientist.dev — zsh
+            leo@daft.codes — zsh
           </span>
           <Link
             href="/"
