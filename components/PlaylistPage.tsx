@@ -30,14 +30,18 @@ export default function PlaylistPage() {
     const move = (e: MouseEvent) => {
       cur.style.left = e.clientX + "px";
       cur.style.top = e.clientY + "px";
+      cur.classList.add("visible");
     };
+    const hide = () => cur.classList.remove("visible");
     document.addEventListener("mousemove", move);
+    document.addEventListener("mouseleave", hide);
     const hoverables = document.querySelectorAll("a,button,.pl-track");
     const enter = () => document.body.classList.add("ch");
     const leave = () => document.body.classList.remove("ch");
     hoverables.forEach(el => { el.addEventListener("mouseenter", enter); el.addEventListener("mouseleave", leave); });
     return () => {
       document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", hide);
       hoverables.forEach(el => { el.removeEventListener("mouseenter", enter); el.removeEventListener("mouseleave", leave); });
     };
   }, []);
@@ -46,15 +50,18 @@ export default function PlaylistPage() {
   useEffect(() => {
     const dotFill = dotFillRef.current;
     if (!dotFill) return;
-    const onScroll = () => {
-      const p = Math.min(
-        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100,
-        100
-      );
+    const update = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const p = scrollable > 0 ? Math.min((window.scrollY / scrollable) * 100, 100) : 100;
       dotFill.style.height = p + "%";
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   // Logo easter egg
