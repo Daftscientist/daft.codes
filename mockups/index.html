@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leo Johnston Mesia</title>
+  <link href="https://cdn.jsdelivr.net/gh/repalash/gilroy-free-webfont@fonts/Gilroy-Extrabold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/repalash/gilroy-free-webfont@fonts/Gilroy-Light.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Leaflet for map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    /* ===== PALETTE FROM LOGO ===== */
+    :root {
+      --onyx: #151515;        /* bg */
+      --charcoal: #4c4c4b;    /* borders, muted elements */
+      --charcoal2: #484849;   /* cards, secondary surfaces */
+      --silver: #bdbcbd;      /* body text */
+      --white: #fefefe;       /* headings, bright text */
+      --col: 720px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.7;
+      background: var(--onyx);
+      color: var(--silver);
+      cursor: none;
+    }
+
+    /* Grain */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99999;
+      opacity: 0.02;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    ::selection { background: var(--charcoal2); color: var(--white); }
+    a { color: var(--white); text-decoration: none; }
+
+    /* Cursor */
+    #cur {
+      position: fixed;
+      width: 7px; height: 7px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100000;
+      transform: translate(-50%,-50%);
+      transition: width .15s, height .15s, opacity .15s;
+      mix-blend-mode: difference;
+    }
+    body.ch #cur { width: 40px; height: 40px; opacity: 0.4; }
+
+    /* Layout */
+    .col {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(21,21,21,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(76,76,75,0.2);
+    }
+    .nav .col {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .logo {
+      font-family: 'Gilroy', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: baseline;
+    }
+    /* The dot that fills on scroll */
+    .logo-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-left: 1px;
+      position: relative;
+      background: rgba(76,76,75,0.5);
+      overflow: hidden;
+      vertical-align: baseline;
+      margin-bottom: 1px;
+    }
+    .logo-dot-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0%;
+      background: var(--white);
+      border-radius: 50%;
+      transition: height 0.05s linear;
+    }
+
+    .nav-r {
+      display: flex;
+      gap: 28px;
+    }
+    .nav-r a {
+      font-size: 13px;
+      color: var(--charcoal);
+      transition: color .2s;
+    }
+    .nav-r a:hover { color: var(--silver); }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 72px 0 56px;
+      position: relative;
+    }
+
+    /* Stick figure from logo — used as a recurring motif */
+    .figure {
+      display: inline-block;
+      pointer-events: none;
+    }
+    .figure img {
+      filter: invert(1);
+      opacity: 0.06;
+    }
+    /* Hero figure — peeking from the right */
+    .hero-figure {
+      position: absolute;
+      top: 20px;
+      right: -30px;
+      width: 180px;
+      transform: rotate(12deg);
+    }
+    .hero-figure img {
+      width: 100%;
+      filter: invert(1);
+      opacity: 0.06;
+    }
+    /* Tiny figure as section accent */
+    .figure-tiny {
+      width: 28px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    .figure-tiny img {
+      width: 100%;
+      filter: invert(1);
+      opacity: 0.12;
+    }
+    /* Footer figure */
+    .figure-foot {
+      width: 22px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+    .figure-foot img {
+      width: 100%;
+      filter: invert(1);
+      opacity: 0.15;
+    }
+
+    .hero-name {
+      font-family: 'Gilroy', sans-serif;
+      font-weight: 800;
+      font-size: clamp(40px, 6vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--white);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero-bio {
+      color: var(--silver);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 540px;
+      margin-bottom: 24px;
+    }
+    .hero-bio strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--charcoal);
+    }
+    .dot-green {
+      width: 5px; height: 5px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #22c55e;
+    }
+    .hero-links {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .hero-links a {
+      font-size: 13px;
+      color: var(--charcoal);
+      transition: color .2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hero-links a:hover { color: var(--white); }
+    .hero-links a svg { width: 14px; height: 14px; opacity: 0.5; }
+
+    /* ===== SHARED ===== */
+    .hr { border: none; border-top: 1px solid rgba(76,76,75,0.2); margin: 0; }
+
+    .sec { padding: 48px 0; }
+    .sec-head {
+      font-family: 'Gilroy', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+    }
+
+    /* ===== BENTO ===== */
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .b {
+      background: rgba(72,72,73,0.08);
+      border: 1px solid rgba(76,76,75,0.15);
+      border-radius: 10px;
+      padding: 18px;
+      transition: border-color .25s, transform .25s cubic-bezier(.2,.8,.2,1);
+    }
+    .b:hover {
+      border-color: rgba(76,76,75,0.35);
+      transform: translateY(-2px);
+    }
+    .bw { grid-column: span 2; }
+    .b-label {
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+    .b-val {
+      font-size: 13px;
+      color: var(--silver);
+      line-height: 1.6;
+    }
+    .b-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .b-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--silver);
+      background: rgba(76,76,75,0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .b-emoji { font-size: 20px; margin-bottom: 6px; display: block; }
+    .b-clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .b-spot-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .b-vinyl {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(var(--onyx), var(--charcoal2), var(--onyx));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spin 3s linear infinite;
+      flex-shrink: 0;
+    }
+    .b-vinyl::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--charcoal);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Paused state — vinyl stops, text changes */
+    .b-spotify.paused .b-vinyl { animation-play-state: paused; }
+    .b-track { font-size: 13px; font-weight: 500; color: var(--white); }
+    .b-artist { font-size: 12px; color: var(--charcoal); }
+    .b-stat {
+      font-family: 'Gilroy', sans-serif;
+      font-weight: 800;
+      font-size: 32px;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    /* Song suggest form */
+    .suggest-form { margin-top: 10px; }
+    .suggest-input-row {
+      display: flex;
+      gap: 6px;
+    }
+    .suggest-input {
+      flex: 1;
+      background: rgba(72,72,73,0.12);
+      border: 1px solid rgba(76,76,75,0.2);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--white);
+      outline: none;
+      transition: border-color .2s;
+      cursor: none;
+    }
+    .suggest-input::placeholder { color: var(--charcoal); }
+    .suggest-input:focus { border-color: var(--charcoal2); }
+    .suggest-send {
+      padding: 8px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--onyx);
+      background: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .suggest-send:hover { opacity: 0.85; }
+    .suggest-send:disabled { opacity: 0.4; cursor: default; }
+    .suggest-status {
+      font-size: 12px;
+      color: var(--charcoal);
+      margin-top: 6px;
+      min-height: 18px;
+    }
+    .suggest-status.ok { color: #6aaa7a; }
+    .suggest-status.err { color: #d48a8a; }
+
+    /* ===== PROJECTS ===== */
+    .proj {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(76,76,75,0.12);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      transition: background .2s;
+      cursor: none;
+    }
+    .proj:last-child { border-bottom: none; }
+    .proj:hover { background: rgba(72,72,73,0.04); margin: 0 -12px; padding-left: 12px; padding-right: 12px; border-radius: 8px; }
+    .proj-name {
+      font-family: 'Gilroy', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--white);
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+    .proj-desc {
+      font-size: 13px;
+      color: var(--silver);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .proj-links {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding-top: 4px;
+    }
+    .proj-link {
+      font-size: 12px;
+      color: var(--charcoal);
+      transition: color .2s;
+      white-space: nowrap;
+    }
+    .proj-link:hover { color: var(--white); }
+
+    /* Expandable code */
+    .proj-code {
+      grid-column: span 2;
+      background: rgba(72,72,73,0.06);
+      border: 1px solid rgba(76,76,75,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .4s cubic-bezier(.2,.8,.2,1), opacity .3s, margin .3s;
+      margin-top: 0;
+    }
+    .proj.open .proj-code {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+    .proj-code-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(76,76,75,0.1);
+    }
+    .cd { width: 8px; height: 8px; border-radius: 50%; }
+    .cd-r { background: #ff5f57; }
+    .cd-y { background: #febc2e; }
+    .cd-g { background: #28c840; }
+    .proj-code-file {
+      margin-left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--charcoal);
+    }
+    .proj-code-body {
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.9;
+      color: var(--silver);
+      overflow-x: auto;
+    }
+    .ck { color: #8a8aff; }
+    .cf { color: #d48a8a; }
+    .cs { color: #6aaa7a; }
+    .cn { color: #c9a84c; }
+    .cc { color: var(--charcoal); }
+
+    /* ===== EXPERIENCE ===== */
+    .exp {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(76,76,75,0.12);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: baseline;
+    }
+    .exp:last-child { border-bottom: none; }
+    .exp-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+    .exp-role {
+      font-size: 14px;
+      color: var(--silver);
+    }
+    .exp-role strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .exp-place {
+      font-size: 12px;
+      color: var(--charcoal);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* ===== MAP (Leaflet) ===== */
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      border: 1px solid rgba(76,76,75,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+      background: var(--onyx);
+    }
+    /* Override Leaflet defaults for dark theme */
+    .leaflet-container { background: var(--onyx) !important; font-family: 'JetBrains Mono', monospace !important; }
+    .leaflet-control-zoom { display: none; }
+    .leaflet-control-attribution { display: none !important; }
+    /* Custom pulse marker */
+    .map-marker {
+      width: 10px; height: 10px;
+      background: var(--white);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(254,254,254,0.3);
+      position: relative;
+    }
+    .map-marker::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--white);
+      opacity: 0.3;
+      animation: mapPulse 2.5s ease-in-out infinite;
+    }
+    .map-marker.secondary {
+      width: 8px; height: 8px;
+      background: var(--silver);
+      box-shadow: 0 0 6px rgba(189,188,189,0.2);
+    }
+    .map-marker.secondary::after { border-color: var(--silver); }
+    .map-marker.peru {
+      background: var(--white);
+      box-shadow: 0 0 10px rgba(254,254,254,0.4);
+    }
+    @keyframes mapPulse {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(2.5); opacity: 0; }
+    }
+    .map-popup .leaflet-popup-content-wrapper {
+      background: var(--onyx) !important;
+      color: var(--silver) !important;
+      border: 1px solid rgba(76,76,75,0.2) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 12px !important;
+    }
+    .map-popup .leaflet-popup-tip { background: var(--onyx) !important; border: 1px solid rgba(76,76,75,0.2) !important; }
+    .map-popup .leaflet-popup-content { margin: 10px 14px !important; }
+    .map-popup strong { color: var(--white); font-weight: 500; }
+
+    /* ===== CONTACT ===== */
+    .contact-row {
+      display: flex;
+      gap: 24px;
+    }
+    .contact-row a {
+      font-size: 14px;
+      color: var(--charcoal);
+      transition: color .2s;
+    }
+    .contact-row a:hover { color: var(--white); }
+
+    /* ===== FOOTER ===== */
+    .foot {
+      padding: 32px 0;
+      font-size: 13px;
+      color: var(--charcoal);
+      font-style: italic;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .foot a { color: var(--charcoal); transition: color .2s; }
+    .foot a:hover { color: var(--silver); }
+
+    /* ===== REVEAL ===== */
+    .r {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .5s, transform .5s cubic-bezier(.2,.8,.2,1);
+    }
+    .r.v { opacity: 1; transform: none; }
+    .rd1 { transition-delay: .05s; }
+    .rd2 { transition-delay: .1s; }
+    .rd3 { transition-delay: .15s; }
+    .rd4 { transition-delay: .2s; }
+
+    @media (max-width: 600px) {
+      .bento { grid-template-columns: 1fr; }
+      .bw { grid-column: span 1; }
+      .exp { grid-template-columns: 1fr; gap: 2px; }
+      .exp-place { text-align: left; }
+      .proj { grid-template-columns: 1fr; }
+      .hero-figures { display: none; }
+      .nav-r { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="col">
+    <a href="#" class="logo" id="logo">daft<span class="logo-dot" id="logoDot"><span class="logo-dot-fill" id="logoDotFill"></span></span></a>
+    <div class="nav-r">
+      <a href="#about">about</a>
+      <a href="#work">work</a>
+      <a href="#places">places</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="col">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-figure"><img src="figure.svg" alt="" draggable="false"></div>
+
+    <h1 class="hero-name r">Leo Johnston Mesia</h1>
+    <p class="hero-bio r rd1">
+      <strong>Software engineer</strong> from England. I build full-stack systems,
+      break things on purpose, and write too much documentation. Half Peruvian,
+      bilingual in English and Spanish. Currently finishing A-Levels and building
+      things that probably shouldn't work but do.
+    </p>
+    <div class="hero-status r rd2">
+      <span class="dot-green"></span>
+      Building something new
+    </div>
+    <div class="hero-links r rd3">
+      <a href="https://github.com/daftscientist" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/leo-johnston" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:leo@daftscientist.dev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email
+      </a>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- About bento -->
+  <section class="sec" id="about">
+    <div class="sec-head r"><span class="figure-tiny"><img src="figure.svg" alt=""></span>About</div>
+    <div class="bento">
+      <div class="b bw r rd1">
+        <div class="b-label">What I do</div>
+        <div class="b-val">End-to-end systems — database schemas, REST APIs, React frontends, deployment pipelines. I think in architectures, not just features.</div>
+        <div class="b-tags">
+          <span class="b-tag">Python</span>
+          <span class="b-tag">TypeScript</span>
+          <span class="b-tag">React</span>
+          <span class="b-tag">FastAPI</span>
+          <span class="b-tag">Rust</span>
+          <span class="b-tag">Docker</span>
+        </div>
+      </div>
+      <div class="b r rd2">
+        <div class="b-label" style="margin-bottom:2px;">Bilingual</div>
+        <div class="b-val">Native English &amp; Spanish</div>
+      </div>
+      <div class="b r rd2">
+        <div class="b-clock" id="clock">--:--:--</div>
+        <div class="b-val" style="color:var(--charcoal); font-size:12px;">Essex, England</div>
+      </div>
+      <div class="b r rd3 b-spotify paused" id="spotifyTile">
+        <div class="b-spot-row">
+          <div class="b-vinyl"></div>
+          <div>
+            <div class="b-track" id="spotTrack">Last Played</div>
+            <div class="b-artist" id="spotArtist">Nothing right now</div>
+          </div>
+        </div>
+      </div>
+      <div class="b r rd3">
+        <div class="b-stat">1,391</div>
+        <div class="b-label">GitHub contributions</div>
+        <div class="b-val" style="color:var(--charcoal);">this year</div>
+      </div>
+      <div class="b bw r rd4" id="suggestTile">
+        <div class="b-label">Suggest me a song</div>
+        <div class="b-val">Think I'd vibe to something? Drop a recommendation and I'll check it out.</div>
+        <div class="suggest-form" id="suggestForm">
+          <div class="suggest-input-row">
+            <input type="text" class="suggest-input" id="suggestInput" placeholder="Song name or Spotify link..." autocomplete="off">
+            <button class="suggest-send" id="suggestSend">Send</button>
+          </div>
+          <div class="suggest-status" id="suggestStatus"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- Projects -->
+  <section class="sec" id="work">
+    <div class="sec-head r">Work</div>
+
+    <div class="proj r rd1" onclick="this.classList.toggle('open')">
+      <div>
+        <div class="proj-name">Workforce Management &amp; Pay Tracking</div>
+        <div class="proj-desc">A-Level CS NEA. Full HR &amp; scheduling system for SMBs — employee scheduling, attendance, role-based access, payroll. 100k+ word write-up.</div>
+        <div class="b-tags">
+          <span class="b-tag">React</span>
+          <span class="b-tag">Python</span>
+          <span class="b-tag">FastAPI</span>
+          <span class="b-tag">SQLAlchemy</span>
+          <span class="b-tag">JWT</span>
+        </div>
+      </div>
+      <div class="proj-links">
+        <a href="#" class="proj-link">GitHub &nearr;</a>
+      </div>
+      <div class="proj-code">
+        <div class="proj-code-bar">
+          <span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span>
+          <span class="proj-code-file">api/routes/schedules.py</span>
+        </div>
+        <div class="proj-code-body"><span class="cc"># Schedule creation with conflict detection</span>
+<span class="ck">@router</span>.post(<span class="cs">"/shifts"</span>)
+<span class="ck">async def</span> <span class="cf">create_shift</span>(
+    shift: ShiftCreate,
+    db: AsyncSession = <span class="cf">Depends</span>(get_db)
+):
+    <span class="ck">await</span> <span class="cf">validate_no_overlap</span>(db, shift)
+    result = <span class="ck">await</span> shift_service.<span class="cf">create</span>(db, shift)
+    <span class="ck">return</span> {<span class="cs">"id"</span>: result.id, <span class="cs">"status"</span>: <span class="cs">"confirmed"</span>}</div>
+      </div>
+    </div>
+
+    <div class="proj r rd2" onclick="this.classList.toggle('open')">
+      <div>
+        <div class="proj-name">WebScene</div>
+        <div class="proj-desc">TypeScript Canvas video composition engine. After Effects-style timeline with layers, tracks, keyframes. Deterministic rendering and frame export.</div>
+        <div class="b-tags">
+          <span class="b-tag">TypeScript</span>
+          <span class="b-tag">Canvas</span>
+          <span class="b-tag">WebCodecs</span>
+        </div>
+      </div>
+      <div class="proj-links">
+        <a href="#" class="proj-link">GitHub &nearr;</a>
+      </div>
+      <div class="proj-code">
+        <div class="proj-code-bar">
+          <span class="cd cd-r"></span><span class="cd cd-y"></span><span class="cd cd-g"></span>
+          <span class="proj-code-file">engine/Scene.ts</span>
+        </div>
+        <div class="proj-code-body"><span class="ck">const</span> scene = <span class="ck">new</span> <span class="cf">Scene</span>({ width: <span class="cn">1920</span>, height: <span class="cn">1080</span> });
+<span class="ck">const</span> layer = scene.<span class="cf">addLayer</span>(<span class="cs">"main"</span>);
+
+layer.<span class="cf">addKeyframe</span>({
+  time: <span class="cn">0</span>,
+  opacity: <span class="cn">0</span>,
+  transform: { scale: <span class="cn">0.8</span> }
+});
+
+<span class="ck">await</span> scene.<span class="cf">render</span>();</div>
+      </div>
+    </div>
+
+    <div class="proj r rd3">
+      <div>
+        <div class="proj-name">JRNI Demo</div>
+        <div class="proj-desc">Booking system API integration built during work experience at bookinglab. React frontend consuming the JRNI scheduling API.</div>
+        <div class="b-tags">
+          <span class="b-tag">TypeScript</span>
+          <span class="b-tag">React</span>
+          <span class="b-tag">JRNI API</span>
+        </div>
+      </div>
+      <div class="proj-links">
+        <a href="#" class="proj-link">GitHub &nearr;</a>
+        <a href="#" class="proj-link">Demo &nearr;</a>
+      </div>
+    </div>
+
+    <div class="proj r rd4">
+      <div>
+        <div class="proj-name">Cascade</div>
+        <div class="proj-desc">SaaS hosting platform replacing the WHMCS/Pterodactyl/cPanel stack. Zero-trust architecture with mTLS, signed actions, and data sovereignty built on Incus.</div>
+        <div class="b-tags">
+          <span class="b-tag">TypeScript</span>
+          <span class="b-tag">Rust</span>
+          <span class="b-tag">Incus</span>
+          <span class="b-tag">OVN</span>
+          <span class="b-tag">Zero-Trust</span>
+        </div>
+      </div>
+      <div class="proj-links">
+        <a href="https://usecascade.io" target="_blank" class="proj-link">Website &nearr;</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- Experience -->
+  <section class="sec" id="exp">
+    <div class="sec-head r">Experience</div>
+    <div class="exp r rd1">
+      <span class="exp-year">2025 —</span>
+      <span class="exp-role"><strong>Founder</strong> of Aftora.io</span>
+      <span class="exp-place">Remote</span>
+    </div>
+    <div class="exp r rd2">
+      <span class="exp-year">2025</span>
+      <span class="exp-role"><strong>CTO &amp; Shop Assistant</strong> at PicaNut</span>
+      <span class="exp-place">Hybrid</span>
+    </div>
+    <div class="exp r rd2">
+      <span class="exp-year">2024</span>
+      <span class="exp-role"><strong>Work Experience</strong> at bookinglab</span>
+      <span class="exp-place">Remote</span>
+    </div>
+    <div class="exp r rd3">
+      <span class="exp-year">2024</span>
+      <span class="exp-role"><strong>Work Experience</strong> at Microsoft</span>
+      <span class="exp-place">Reading &amp; London</span>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- Places / Map -->
+  <section class="sec" id="places">
+    <div class="sec-head r"><span class="figure-tiny"><img src="figure.svg" alt=""></span>Places</div>
+    <div class="map-wrap r rd1">
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- Contact -->
+  <section class="sec" id="contact">
+    <div class="sec-head r">Contact</div>
+    <p class="r rd1" style="color: var(--charcoal); margin-bottom: 16px; font-size: 14px;">Got a project, an idea, or just want to say hello.</p>
+    <div class="contact-row r rd2">
+      <a href="mailto:leo@daftscientist.dev">Email</a>
+      <a href="https://github.com/daftscientist" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/leo-johnston" target="_blank">LinkedIn</a>
+    </div>
+  </section>
+
+  <hr class="hr">
+
+  <!-- Footer -->
+  <footer class="foot r">
+    <span><span class="figure-foot"><img src="figure.svg" alt=""></span>Built by Leo off his ADHD meds in a mass hyperfocus</span>
+    <a href="terminal.html">/terminal</a>
+  </footer>
+
+</div><!-- .col -->
+
+<script>
+// Cursor
+const c = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  c.style.left = e.clientX + 'px';
+  c.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,.b,.proj,.map-pin').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('ch'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('ch'));
+});
+
+// Scroll progress — fills the dot
+const dotFill = document.getElementById('logoDotFill');
+window.addEventListener('scroll', () => {
+  const p = Math.min(window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100, 100);
+  dotFill.style.height = p + '%';
+}, { passive: true });
+
+// Clock
+const cl = document.getElementById('clock');
+function tick() {
+  cl.textContent = new Date().toLocaleTimeString('en-GB', {
+    timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+}
+tick(); setInterval(tick, 1000);
+
+// Reveal
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+// === LEAFLET MAP ===
+const map = L.map('map', {
+  center: [25, -15],
+  zoom: 2.4,
+  zoomControl: false,
+  attributionControl: false,
+  dragging: true,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  touchZoom: false,
+  maxBounds: [[-80, -180], [85, 180]],
+  maxBoundsViscosity: 1.0
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  subdomains: 'abcd',
+  maxZoom: 6,
+  minZoom: 2
+}).addTo(map);
+
+// Custom pin icon
+function makeIcon(size, color) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="map-marker${color ? ' ' + color : ''}" style="width:${size}px;height:${size}px;"></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2]
+  });
+}
+
+// Pins
+const pins = [
+  { lat: 51.88, lng: 0.90, label: '<strong>Essex, England</strong><br>Home', icon: makeIcon(12, '') },
+  { lat: 51.30, lng: -1.20, label: '<strong>Microsoft</strong><br>Reading — Work experience, 2024', icon: makeIcon(9, 'secondary') },
+  { lat: 53.00, lng: -2.20, label: '<strong>bookinglab</strong><br>Remote — Work experience, 2024', icon: makeIcon(9, 'secondary') },
+  { lat: 55.95, lng: -3.20, label: '<strong>Edinburgh</strong><br>Visited', icon: makeIcon(8, 'secondary') },
+  { lat: -9.19, lng: -75.01, label: '<strong>Peru</strong><br><em>mi otra casa</em>', icon: makeIcon(12, 'peru') },
+];
+
+pins.forEach(p => {
+  L.marker([p.lat, p.lng], { icon: p.icon })
+    .addTo(map)
+    .bindPopup(p.label, { className: 'map-popup', closeButton: false, offset: [0, -6] });
+});
+
+// Dashed arc line from Peru to Essex
+const arcPoints = [];
+const startLat = -9.19, startLng = -75.01, endLat = 51.88, endLng = 0.90;
+for (let i = 0; i <= 50; i++) {
+  const t = i / 50;
+  const lat = startLat + t * (endLat - startLat);
+  const lng = startLng + t * (endLng - startLng);
+  const arc = Math.sin(t * Math.PI) * 15;
+  arcPoints.push([lat + arc, lng]);
+}
+L.polyline(arcPoints, {
+  color: 'rgba(189,188,189,0.15)',
+  weight: 1,
+  dashArray: '6 6'
+}).addTo(map);
+
+// === SPOTIFY STATE ===
+// Simulate: set isPlaying = true to see playing state
+const isPlaying = false;
+const spotTile = document.getElementById('spotifyTile');
+const spotTrack = document.getElementById('spotTrack');
+const spotArtist = document.getElementById('spotArtist');
+if (isPlaying) {
+  spotTile.classList.remove('paused');
+  spotTrack.textContent = 'Some Great Song';
+  spotArtist.textContent = 'by Artist Name';
+} else {
+  spotTile.classList.add('paused');
+  spotTrack.textContent = 'Last Played';
+  spotArtist.textContent = 'Nothing right now';
+}
+
+// Logo easter egg
+let lc = 0, lt;
+document.getElementById('logo').addEventListener('click', e => {
+  e.preventDefault();
+  lc++; clearTimeout(lt);
+  lt = setTimeout(() => lc = 0, 1500);
+  if (lc >= 7) {
+    lc = 0;
+    document.body.style.transition = 'transform .6s cubic-bezier(.2,.8,.2,1)';
+    document.body.style.transform = 'rotate(360deg)';
+    setTimeout(() => { document.body.style.transform = ''; setTimeout(() => document.body.style.transition = '', 600); }, 700);
+  }
+});
+
+// Song suggest
+const suggestInput = document.getElementById('suggestInput');
+const suggestSend = document.getElementById('suggestSend');
+const suggestStatus = document.getElementById('suggestStatus');
+
+suggestSend.addEventListener('click', submitSuggestion);
+suggestInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitSuggestion(); });
+
+async function submitSuggestion() {
+  const val = suggestInput.value.trim();
+  if (!val) return;
+  suggestSend.disabled = true;
+  suggestStatus.textContent = 'Sending...';
+  suggestStatus.className = 'suggest-status';
+
+  try {
+    // MVP: stores in localStorage; upgrade to CF Worker + KV later
+    const suggestions = JSON.parse(localStorage.getItem('song-suggestions') || '[]');
+    suggestions.push({ song: val, ts: Date.now() });
+    localStorage.setItem('song-suggestions', JSON.stringify(suggestions));
+
+    suggestInput.value = '';
+    suggestStatus.textContent = 'Thanks, I\'ll check it out.';
+    suggestStatus.className = 'suggest-status ok';
+  } catch (err) {
+    suggestStatus.textContent = 'Something broke. Try again?';
+    suggestStatus.className = 'suggest-status err';
+  }
+
+  suggestSend.disabled = false;
+  setTimeout(() => { suggestStatus.textContent = ''; suggestStatus.className = 'suggest-status'; }, 4000);
+}
+
+// Console
+console.log('%cdaft.%c Try /terminal', 'background:#484849;color:#fefefe;padding:4px 8px;border-radius:4px;font-weight:800;font-family:Gilroy,sans-serif;', 'color:#4c4c4b;font-size:12px;');
+</script>
+</body>
+</html>
