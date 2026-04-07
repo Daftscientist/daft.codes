@@ -228,7 +228,7 @@ export default function HomePage() {
         {/* Hero */}
         <section className="hero">
           <div className="hero-figure">
-            <Image src="/figure.svg" alt="" width={180} height={174} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={180} height={174} draggable={false} />
           </div>
 
           <h1 className="hero-name r">Leo Johnston Mesia</h1>
@@ -273,25 +273,25 @@ export default function HomePage() {
         {/* Decorative background figures */}
         <div className="bg-figures" aria-hidden="true">
           <div className="bg-fig" style={{ top: '30px', left: '-80px', transform: 'rotate(-10deg)' }}>
-            <Image src="/figure.svg" alt="" width={110} height={106} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={110} height={106} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '180px', right: '-50px', transform: 'rotate(18deg) scaleX(-1)' }}>
-            <Image src="/figure.svg" alt="" width={80} height={77} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={80} height={77} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '420px', left: '10px', transform: 'rotate(-22deg)' }}>
-            <Image src="/figure.svg" alt="" width={55} height={53} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={55} height={53} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '620px', right: '-30px', transform: 'rotate(8deg)' }}>
-            <Image src="/figure.svg" alt="" width={90} height={87} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={90} height={87} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '900px', left: '-50px', transform: 'rotate(28deg) scaleX(-1)' }}>
-            <Image src="/figure.svg" alt="" width={65} height={63} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={65} height={63} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '1150px', right: '0px', transform: 'rotate(-15deg)' }}>
-            <Image src="/figure.svg" alt="" width={50} height={48} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={50} height={48} draggable={false} />
           </div>
           <div className="bg-fig" style={{ top: '1400px', left: '-20px', transform: 'rotate(12deg) scaleX(-1)' }}>
-            <Image src="/figure.svg" alt="" width={70} height={68} draggable={false} />
+            <Image src="/assets/figure.svg" alt="" width={70} height={68} draggable={false} />
           </div>
         </div>
 
@@ -299,7 +299,7 @@ export default function HomePage() {
         <section className="sec" id="about">
           <div className="sec-head r">
             <span className="figure-tiny">
-              <Image src="/figure.svg" alt="" width={28} height={27} />
+              <Image src="/assets/figure.svg" alt="" width={28} height={27} />
             </span>
             About
           </div>
@@ -553,7 +553,7 @@ export default function HomePage() {
         <section className="sec" id="places">
           <div className="sec-head r">
             <span className="figure-tiny">
-              <Image src="/figure.svg" alt="" width={28} height={27} />
+              <Image src="/assets/figure.svg" alt="" width={28} height={27} />
             </span>
             Places
           </div>
@@ -581,7 +581,7 @@ export default function HomePage() {
         <footer className="foot r">
           <span>
             <span className="figure-foot">
-              <Image src="/figure.svg" alt="" width={22} height={21} />
+              <Image src="/assets/figure.svg" alt="" width={22} height={21} />
             </span>
             Built by Leo when his ADHD meds ran out.
           </span>
