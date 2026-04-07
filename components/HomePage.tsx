@@ -326,14 +326,12 @@ export default function HomePage() {
               <div className="b-clock" ref={clockRef}>--:--:--</div>
               <div className="b-val" style={{ color: "var(--charcoal)", fontSize: "12px" }}>Essex, England</div>
             </div>
-            <div className={`b r rd3 b-spotify${spotify?.is_playing ? "" : " paused"}`}>
+            <div className="b r rd3 b-spotify">
               {spotify?.url ? (
                 <a href={spotify.url} target="_blank" rel="noopener noreferrer" className="b-spot-link">
                   <div className="b-spot-row">
-                    {spotify.album_art ? (
+                    {spotify.album_art && (
                       <img src={spotify.album_art} alt="" className="b-album-art" />
-                    ) : (
-                      <div className="b-vinyl" />
                     )}
                     <div>
                       <div className="b-track">{spotify.track || "Nothing right now"}</div>
@@ -342,13 +340,10 @@ export default function HomePage() {
                   </div>
                 </a>
               ) : (
-                <div className="b-spot-row">
-                  <div className="b-vinyl" />
-                  <div>
-                    <div className="b-track">{spotify?.track || "Last Played"}</div>
-                    <div className="b-artist">{spotify?.artist || "Nothing right now"}</div>
-                  </div>
-                </div>
+                <>
+                  <div className="b-track">{spotify?.track || "Nothing right now"}</div>
+                  <div className="b-artist">{spotify?.artist || ""}</div>
+                </>
               )}
             </div>
             <div className="b r rd3">

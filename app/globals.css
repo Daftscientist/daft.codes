@@ -304,24 +304,6 @@ body.ch #cur { width: 40px; height: 40px; opacity: 0.4; }
   align-items: center;
   gap: 12px;
 }
-.b-vinyl {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: conic-gradient(var(--onyx), var(--charcoal2), var(--onyx));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: spin 3s linear infinite;
-  flex-shrink: 0;
-}
-.b-vinyl::after {
-  content: '';
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--charcoal);
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.b-spotify.paused .b-vinyl { animation-play-state: paused; }
 .b-spot-link {
   display: block;
   text-decoration: none;
