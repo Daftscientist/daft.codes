@@ -332,8 +332,14 @@ export default function HomePage() {
                       <img src={spotify.album_art} alt="" className="b-album-art" />
                     )}
                     <div>
+                      <div className="b-status">
+                        <span className={`b-status-dot ${spotify.is_playing ? "playing" : "last"}`} />
+                        <span style={{ color: spotify.is_playing ? "#6aaa7a" : "var(--charcoal)" }}>
+                          {spotify.is_playing ? "now playing" : "last played"}
+                        </span>
+                      </div>
                       <div className="b-track">{spotify.track || "Nothing right now"}</div>
-                      <div className="b-artist">{spotify.artist || (spotify.is_playing ? "Playing" : "Last Played")}</div>
+                      <div className="b-artist">{spotify.artist}</div>
                     </div>
                   </div>
                 </a>

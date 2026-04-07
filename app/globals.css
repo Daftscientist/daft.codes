@@ -319,6 +319,34 @@ body.ch #cur { width: 40px; height: 40px; opacity: 0.4; }
 }
 .b-track { font-size: 13px; font-weight: 500; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 .b-artist { font-size: 12px; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.b-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.b-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.b-status-dot.playing {
+  background: #6aaa7a;
+  box-shadow: 0 0 0 0 rgba(106,170,122,0.4);
+  animation: pulse-dot 1.8s infinite;
+}
+.b-status-dot.last {
+  background: var(--charcoal);
+}
+@keyframes pulse-dot {
+  0%   { box-shadow: 0 0 0 0 rgba(106,170,122,0.4); }
+  70%  { box-shadow: 0 0 0 5px rgba(106,170,122,0); }
+  100% { box-shadow: 0 0 0 0 rgba(106,170,122,0); }
+}
 .b-stat {
   font-family: 'Gilroy', sans-serif;
   font-weight: 800;
