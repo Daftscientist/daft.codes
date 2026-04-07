@@ -21,6 +21,7 @@ export default function PlaylistPage() {
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
 
   // Cursor
   useEffect(() => {
@@ -141,6 +142,15 @@ export default function PlaylistPage() {
         {/* Suggestions */}
         <section className="sec">
           <div className="sec-head r">Suggestions</div>
+          {!loading && suggestions.length > 0 && (
+            <input
+              className="pl-filter r rd1"
+              placeholder="filter by track or artist..."
+              value={filter}
+              onChange={e => setFilter(e.target.value)}
+              spellCheck={false}
+            />
+          )}
           <div className="pl-list r rd1">
             {loading && (
               <div className="pl-empty">Loading...</div>
@@ -148,29 +158,42 @@ export default function PlaylistPage() {
             {!loading && suggestions.length === 0 && (
               <div className="pl-empty">No suggestions yet. Be the first.</div>
             )}
-            {!loading && suggestions.map((s, i) => (
-              <div key={i} className="pl-track">
-                {s.album_art ? (
-                  <img src={s.album_art} className="pl-art" alt="" />
-                ) : (
-                  <div className="pl-art" />
-                )}
-                <div className="pl-info">
-                  <div className="pl-track-name">{s.track}</div>
-                  <div className="pl-artist">{s.artist || "Unknown artist"}</div>
+            {!loading && (() => {
+              const q = filter.trim().toLowerCase();
+              const filtered = q
+                ? suggestions.filter(s =>
+                    s.track.toLowerCase().includes(q) ||
+                    (s.artist || "").toLowerCase().includes(q)
+                  )
+                : suggestions;
+              if (filtered.length === 0) return (
+                <div className="pl-empty">No matches.</div>
+              );
+              return filtered.map((s, i) => (
+                <div key={i} className="pl-track">
+                  <span className="pl-num">{i + 1}.</span>
+                  {s.album_art ? (
+                    <img src={s.album_art} className="pl-art" alt="" />
+                  ) : (
+                    <div className="pl-art" />
+                  )}
+                  <div className="pl-info">
+                    <div className="pl-track-name">{s.track}</div>
+                    <div className="pl-artist">{s.artist || "Unknown artist"}</div>
+                  </div>
+                  {s.spotify_url && (
+                    <a
+                      href={s.spotify_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="pl-link"
+                    >
+                      Open ↗
+                    </a>
+                  )}
                 </div>
-                {s.spotify_url && (
-                  <a
-                    href={s.spotify_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="pl-link"
-                  >
-                    Open ↗
-                  </a>
-                )}
-              </div>
-            ))}
+              ));
+            })()}
           </div>
         </section>
 

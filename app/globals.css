@@ -651,6 +651,28 @@ body.ch #cur { width: 40px; height: 40px; opacity: 0.4; }
 @keyframes srch-spin { to { transform: translateY(-50%) rotate(360deg); } }
 
 /* ===== PLAYLIST PAGE ===== */
+.pl-filter {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(76,76,75,0.2);
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--silver);
+  padding: 8px 0;
+  margin-bottom: 16px;
+  caret-color: var(--white);
+}
+.pl-filter::placeholder { color: var(--charcoal); }
+.pl-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--charcoal);
+  width: 24px;
+  flex-shrink: 0;
+  text-align: right;
+}
 .pl-list { display: flex; flex-direction: column; }
 .pl-track {
   display: flex;
