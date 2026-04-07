@@ -260,7 +260,22 @@ export default function TerminalPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const matrixAnimRef = useRef<number>(0);
+
+  // Shrink to visual viewport so soft keyboard doesn't clip content
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      if (containerRef.current) {
+        containerRef.current.style.height = vv.height + "px";
+      }
+    };
+    update();
+    vv.addEventListener("resize", update);
+    return () => vv.removeEventListener("resize", update);
+  }, []);
 
   // Boot message
   useEffect(() => {
@@ -485,6 +500,7 @@ export default function TerminalPage() {
       />
 
       <div
+        ref={containerRef}
         className="terminal-wrap"
         style={{
           display: "flex",
