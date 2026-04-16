@@ -1,4 +1,4 @@
-# daftscientist.dev
+# dafts.codes
 
 Personal portfolio site for Leo Johnston Mesia. Built with Next.js, statically exported, and deployed on Cloudflare Pages.
 
