@@ -238,14 +238,15 @@ export default function HomePage() {
 
           <h1 className="hero-name r">Leo Johnston Mesia</h1>
           <p className="hero-bio r rd1">
-            <strong>Software engineer</strong>{" "}from England. I build full-stack systems,
-            break things on purpose, and write too much documentation. Half Peruvian,
-            bilingual in English and Spanish. Currently finishing A-Levels and building
-            things that probably shouldn&apos;t work but do.
+            <strong>Software engineer</strong>{" "}from England. I build systems and
+            developer tooling, break things on purpose, and write too much documentation.
+            Half Peruvian, bilingual in English and Spanish. A-Levels done, now looking
+            for apprenticeships and junior roles, and still building things that
+            probably shouldn&apos;t work but do.
           </p>
           <div className="hero-status r rd2">
             <span className="dot-green" />
-            Building something new
+            Open to apprenticeships &amp; junior roles
           </div>
           <div className="hero-links r rd3">
             <a href="https://github.com/daftscientist" target="_blank" rel="noopener noreferrer">
@@ -312,15 +313,15 @@ export default function HomePage() {
             <div className="b bw r rd1">
               <div className="b-label">What I do</div>
               <div className="b-val">
-                End-to-end systems — database schemas, REST APIs, React frontends, deployment pipelines. I think in architectures, not just features.
+                Low-level systems and developer tooling, plus the odd end-to-end product when it needs building properly. Document engines, browser runtimes, isolated compute. I think in architectures, not just features.
               </div>
               <div className="b-tags">
                 <span className="b-tag">Python</span>
                 <span className="b-tag">TypeScript</span>
                 <span className="b-tag">React</span>
-                <span className="b-tag">FastAPI</span>
                 <span className="b-tag">Rust</span>
-                <span className="b-tag">Docker</span>
+                <span className="b-tag">C++</span>
+                <span className="b-tag">WebAssembly</span>
               </div>
             </div>
             <div className="b r rd2">
@@ -358,9 +359,9 @@ export default function HomePage() {
               )}
             </div>
             <div className="b r rd3">
-              <div className="b-stat">1,391</div>
+              <div className="b-stat">3,752</div>
               <div className="b-label">GitHub contributions</div>
-              <div className="b-val" style={{ color: "var(--charcoal)" }}>this year</div>
+              <div className="b-val" style={{ color: "var(--charcoal)" }}>in the last year</div>
             </div>
             <div className="b bw r rd4">
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2px" }}>
@@ -385,6 +386,61 @@ export default function HomePage() {
           <div className="sec-head r">Work</div>
 
           <div className="proj r rd1" onClick={toggleProj}>
+            <div>
+              <div className="proj-name">domOXML</div>
+              <div className="proj-desc">
+                Open-source document compiler. Turns HTML into real, editable PowerPoint decks, and decks back into HTML, so documents can be written in code and still end up native in Office. Python, with layout resolved by Chromium.
+              </div>
+              <div className="b-tags">
+                <span className="b-tag">Python</span>
+                <span className="b-tag">Chromium</span>
+                <span className="b-tag">OOXML</span>
+              </div>
+            </div>
+            <div className="proj-links">
+              <a href="https://daftscientist.github.io/domOXML/" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                Live demo ↗
+              </a>
+              <a href="https://github.com/Daftscientist/domOXML" className="proj-link" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                GitHub ↗
+              </a>
+            </div>
+            <div className="proj-code">
+              <div className="proj-code-bar">
+                <span className="cd cd-r" />
+                <span className="cd cd-y" />
+                <span className="cd cd-g" />
+                <span className="proj-code-file">README.md</span>
+              </div>
+              <div className="proj-code-body">
+                <span className="ck">from</span> domoxml <span className="ck">import</span> Presentation, Slide
+                {"\n"}
+                <span className="ck">from</span> domoxml.types <span className="ck">import</span> OutputFormat, SlideSize
+                {"\n\n"}
+                deck = <span className="cf">Presentation</span>(size=SlideSize.WIDE_16_9)
+                {"\n\n"}
+                deck.<span className="cf">add</span>(<span className="cf">Slide</span>(html=<span className="cs">&quot;&lt;h1&gt;Coffee that tastes like calm.&lt;/h1&gt;&quot;</span>))
+                {"\n\n"}
+                result = deck.<span className="cf">render</span>({"{OutputFormat.PPTX}"})
+              </div>
+            </div>
+          </div>
+
+          <div className="proj r rd2">
+            <div>
+              <div className="proj-name">Browser Execution &amp; WebAssembly Research</div>
+              <div className="proj-desc">
+                Trying to run a real browser engine inside WebAssembly: Chromium, started on demand, so a browser session can spin up in milliseconds and suspend when idle. Private for now, and very much a work in progress.
+              </div>
+              <div className="b-tags">
+                <span className="b-tag">C++</span>
+                <span className="b-tag">Rust</span>
+                <span className="b-tag">WebAssembly</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="proj r rd3" onClick={toggleProj}>
             <div>
               <div className="proj-name">Workforce Management &amp; Pay Tracking</div>
               <div className="proj-desc">
@@ -435,9 +491,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="proj r rd2" onClick={toggleProj}>
+          <div className="proj r rd4" onClick={toggleProj}>
             <div>
-              <div className="proj-name">WebScene</div>
+              <div className="proj-name">WebScene <span style={{ fontSize: "11px", color: "var(--charcoal)", fontWeight: 400, letterSpacing: "0.3px" }}>— dormant</span></div>
               <div className="proj-desc">
                 TypeScript Canvas video composition engine. After Effects-style timeline with layers, tracks, keyframes. Deterministic rendering and frame export.
               </div>
@@ -479,49 +535,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="proj r rd3">
-            <div>
-              <div className="proj-name">JRNI Demo</div>
-              <div className="proj-desc">
-                Booking system API integration built during work experience at bookinglab. React frontend consuming the JRNI scheduling API.
-              </div>
-              <div className="b-tags">
-                <span className="b-tag">TypeScript</span>
-                <span className="b-tag">React</span>
-                <span className="b-tag">JRNI API</span>
-              </div>
-            </div>
-            <div className="proj-links">
-              <a href="https://github.com/Daftscientist/Jrni-Demo" className="proj-link" target="_blank" rel="noopener noreferrer">
-                GitHub ↗
-              </a>
-            </div>
-          </div>
-
-          <div className="proj r rd4">
-            <div>
-              <div className="proj-name">Cascade</div>
-              <div className="proj-desc">
-                SaaS hosting platform replacing the WHMCS/Pterodactyl/cPanel stack. Zero-trust architecture with mTLS, signed actions, and data sovereignty. Native LXC, KVM, and Docker workloads.
-              </div>
-              <div className="b-tags">
-                <span className="b-tag">TypeScript</span>
-                <span className="b-tag">Rust</span>
-                <span className="b-tag">LXC/KVM</span>
-                <span className="b-tag">OVN</span>
-                <span className="b-tag">Zero-Trust</span>
-              </div>
-            </div>
-            <div className="proj-links">
-              <a href="https://usecascade.io" className="proj-link" target="_blank" rel="noopener noreferrer">
-                Website ↗
-              </a>
-              <a href="https://github.com/UseCascadeIo" className="proj-link" target="_blank" rel="noopener noreferrer">
-                GitHub ↗
-              </a>
-            </div>
-          </div>
-
           <div className="proj r rd5">
             <div>
               <div className="proj-name">PteroDev <span style={{ fontSize: "11px", color: "var(--charcoal)", fontWeight: 400, letterSpacing: "0.3px" }}>— sunsetted</span></div>
@@ -543,8 +556,8 @@ export default function HomePage() {
         <section className="sec" id="exp">
           <div className="sec-head r">Experience</div>
           <div className="exp r rd1">
-            <span className="exp-year">2025</span>
-            <span className="exp-role"><strong>Founder</strong> of Aftora.io</span>
+            <span className="exp-year">2026</span>
+            <span className="exp-role"><strong>Founder &amp; Software Developer</strong> at Aftora — client work incl. Local Social Value</span>
             <span className="exp-place">Remote</span>
           </div>
           <div className="exp r rd2">

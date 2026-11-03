@@ -6,7 +6,22 @@ export const metadata: Metadata = {
     default: "Daft.",
     template: "%s | Daft.",
   },
-  description: "Leo Johnston Mesia — Software engineer from England.",
+  description: "Leo Johnston Mesia — software engineer from England. Building domOXML, document tooling and systems software.",
+  metadataBase: new URL("https://daft.codes"),
+  openGraph: {
+    title: "Leo Johnston Mesia — Software Engineer",
+    description: "Software engineer from England. Building domOXML, document tooling and systems software.",
+    url: "https://daft.codes",
+    siteName: "daft.",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 627, alt: "daft.codes — Leo Johnston Mesia, software engineer" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Leo Johnston Mesia — Software Engineer",
+    description: "Software engineer from England. Building domOXML, document tooling and systems software.",
+    images: ["/og.png"],
+  },
   icons: {
     icon: "/favicon.png",
   },
